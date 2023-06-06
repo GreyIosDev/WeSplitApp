@@ -9,24 +9,24 @@ import SwiftUI
 
 struct ContentView: View {// what we did here now was state the different components of our app and set their default values to note what would change. The @State gives us the ability to know when changes have been made to our property in the app view. It basically just gives us the ability to modify our property in SwiftUI.
     
-    @State private var checkAmount = 0.0 // always remember that the $ sign is to be accompained with whatever the property we have to represent the Binding state relation. Note that adding a $ which is the binding state represents the read and write ability means that Intend for a value to be added to our code but when not represented
+    @State private var checkAmount = 0.0 // always remember that the $ sign is to be accompained with whatever the property we have to represent the Binding state relation. Note that adding a $ which is the binding state represents the read /imgresand write ability means that Intend for a value to be added to our code but when not represented
     @State private var numberOfPeople = 2
     @State private var tipPercentage = 20
     @FocusState private var amountIsFocused: Bool //  used to track the focus state of a text field or other user interface element. It can be used to change the appearance or behavior of the interface element when it is in focus.
     
     let tipPercentages = [10, 15, 20, 25, 0]
-        
+    
     // We are creating a computed property
     var totalPerPerson: Double {// This is how to create a computed property which helps us to be able to simply calculate the tip we need and this is how to create it.
         // Calculate the total per person
         let peopleCount = Double(numberOfPeople + 2)
-            let tipSelection = Double(tipPercentage)
-
-            let tipValue = checkAmount * tipSelection / 100// Formula to calculate the Tipvalue
-            let grandTotal = checkAmount + tipValue// This is the total of both the cost of the meal + tip and then how much should everyone bring is then calculated next.
-            let amountPerPerson = grandTotal / peopleCount
-
-            return amountPerPerson
+        let tipSelection = Double(tipPercentage)
+        
+        let tipValue = checkAmount * tipSelection / 100// Formula to calculate the Tipvalue
+        let grandTotal = checkAmount + tipValue// This is the total of both the cost of the meal + tip and then how much should everyone bring is then calculated next.
+        let amountPerPerson = grandTotal / peopleCount
+        
+        return amountPerPerson
     }
     // Created another Computed property that shows the Total check amount section and this is how it is represented in a section
     var totalCheckAmount: Double {
@@ -84,17 +84,17 @@ struct ContentView: View {// what we did here now was state the different compon
                         .font(.subheadline)
                         .bold()
                         .foregroundColor(.black)
-                    }
-            
+                }
+                
                 Section {
-                Text(totalCheckAmount,format:
-                        .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                    Text(totalCheckAmount,format:
+                            .currency(code: Locale.current.currency?.identifier ?? "USD"))
                 }header:{
                     Text("Total check amount")
                         .font(.subheadline)
                         .bold()
-                        .foregroundColor(.black)
-                    }
+                        .foregroundColor(tipPercentage == 0 ? .red : .black)
+                }
                 
                 
             }
@@ -104,6 +104,7 @@ struct ContentView: View {// what we did here now was state the different compon
             
             .background(Color.green)
             .navigationTitle("WeSplit")// We call this inside the form because we want it to be the title of the form.
+            
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
